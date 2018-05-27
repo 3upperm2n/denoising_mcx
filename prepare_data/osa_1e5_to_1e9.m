@@ -17,7 +17,7 @@ time = zeros(N,5);
 pho_cnt = [1e5, 1e6, 1e7, 1e8, 1e9];  % use 1e9 (as the ground truth)
 volume = uint8(ones(x,y,z));
 
-[_, simNum] = size(pho_cnt)
+[~, simNum] = size(pho_cnt);
 
 for k=1:simNum
 	% Generate new random seed for Monte Carlo simulation
@@ -67,8 +67,12 @@ for k=1:simNum
         %------
         % x-axis
         %------
+        
+        dir_x = sprintf('%s/x', dir_phn_test);
+        if ~exist(dir_x, 'dir')  mkdir(dir_x); end
+    
         for imageID=1:x
-            fname = sprintf('%s/x/osa_phn%1.0e_test%d_img%d.mat', dir_phn_test, pho_cnt(k), tid, imageID);
+            fname = sprintf('%s/osa_phn%1.0e_test%d_img%d.mat', dir_x, pho_cnt(k), tid, imageID);
             fprintf('Generating %s\n (x-axis)',fname);
             currentImage = squeeze(image3D(imageID,:,:));
             feval('save', fname, 'currentImage');
@@ -77,8 +81,11 @@ for k=1:simNum
         %------
         % y-axis
         %------
+        dir_y = sprintf('%s/y', dir_phn_test);
+        if ~exist(dir_y, 'dir')  mkdir(dir_y); end
+
         for imageID=1:y
-            fname = sprintf('%s/y/osa_phn%1.0e_test%d_img%d.mat', dir_phn_test, pho_cnt(k), tid, imageID);
+            fname = sprintf('%s/osa_phn%1.0e_test%d_img%d.mat', dir_y, pho_cnt(k), tid, imageID);
             fprintf('Generating %s\n (y-axis)',fname);
             currentImage = squeeze(image3D(:,imageID,:));
             feval('save', fname, 'currentImage');
@@ -88,8 +95,11 @@ for k=1:simNum
         %------
         % z-axis
         %------
-        for imageID=1:
-            fname = sprintf('%s/z/osa_phn%1.0e_test%d_img%d.mat', dir_phn_test, pho_cnt(k), tid, imageID);
+        dir_z = sprintf('%s/z', dir_phn_test);
+        if ~exist(dir_z, 'dir')  mkdir(dir_z); end
+
+        for imageID=1:z
+            fname = sprintf('%s/osa_phn%1.0e_test%d_img%d.mat', dir_z, pho_cnt(k), tid, imageID);
             fprintf('Generating %s\n (z-axis)',fname);
             currentImage = squeeze(image3D(:,:,imageID));
             feval('save', fname, 'currentImage');
