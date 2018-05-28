@@ -14,7 +14,7 @@ z = 100;
 
 
 time = zeros(N,5);
-pho_cnt = [1e5, 1e6, 1e7, 1e8, 1e9];  % use 1e9 (as the ground truth)
+pho_cnt = [1e9];  % use 1e9 (as the ground truth)
 volume = uint8(ones(x,y,z));
 
 [~, simNum] = size(pho_cnt);
