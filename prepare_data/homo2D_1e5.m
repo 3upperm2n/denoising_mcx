@@ -57,7 +57,7 @@ for i = 1:length(x_linspace)
       
       for k = 1:length(refractive_idx)
           refract = refractive_idx(k);
-          %fprintf("%.2f %.2f %.2f %d\n", xpos, ypos, refract, testID);
+          fprintf('%.2f %.2f %.2f %d\n', xpos, ypos, refract, testID);
           
           fname_save = sprintf('%s/test%d.mat', dir_phn, testID);
           %disp(fname);
@@ -69,6 +69,10 @@ for i = 1:length(x_linspace)
           
           
           testID = testID + 1;
+          
+          break
       end
+      break
    end
+   break
 end

@@ -1,5 +1,9 @@
-function homo2D_gen(pho_cnt, fname_save, rand_seed, volume, ...
-    xpos, ypos, refract)
+function homo2D_gen(pho_cnt, fname_save, rand_seed, volume, xpos, ypos, refract)
+
+%fprintf('%.2f %.2f %.2f\n', xpos, ypos, refract);
+xpos = uint8(xpos);
+ypos = uint8(ypos);
+%fprintf('%d %d %.2f\n', xpos, ypos, refract);
 
 clear cfg
 cfg.nphoton=pho_cnt;
