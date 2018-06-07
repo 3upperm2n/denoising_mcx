@@ -72,7 +72,9 @@ for i = 1:length(x_linspace)
           cfg.vol= volume;
           
           %cfg.srcpos=[1 1 1];  % change the last two pos [z, y, x]
-          srcpos_str = strcat("cfg.srcpos=[1 ", string(ypos), " ", string(xpos), "];");
+          %srcpos_str = strcat("cfg.srcpos=[1 ", string(ypos), " ", string(xpos), "];");
+          srcpos_str = sprintf("cfg.srcpos=[1 %d %d];", ypos, xpos);
+          
           %disp(srcpos_str);
           %eval('cfg.srcpos=[1 1 1];')
           eval(srcpos_str);
