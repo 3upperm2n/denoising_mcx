@@ -1,6 +1,13 @@
-% 
-% the object from 1 to 40 (40)
-% for each object, 1 to 1000 random seed (1K)
+clc;
+clear all;
+
+addpath('../mcx')
+addpath('../mcx/mcxlab')
+
+
+%%
+% the prop_num from 2 to 21 (20)
+% for each object, 1 to 100 random seed (100)
 % 1e5 and 1e8 photons
 
 % Top-level Dir
@@ -17,8 +24,7 @@ if ~exist(dir_phn_clean, 'dir')  mkdir(dir_phn_clean); end
 
 
 
-prop_num = 40;
-N = 1000;
+N = 100;
 
 
 % Generate new random seed for Monte Carlo simulation
@@ -30,7 +36,7 @@ end
 
 testID = 1;
 
-for i = 1:prop_num
+for i = 2:21
    for j = 1 : N 
     rand_sd = rand_seed(j);
     
