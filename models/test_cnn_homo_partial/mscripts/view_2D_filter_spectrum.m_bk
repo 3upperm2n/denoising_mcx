@@ -54,13 +54,21 @@ end
 % save the figure without plotting
 if nargin == 4
    f = figure('visible','off');
-   subplot(1,2,1)
-   imagesc(abs(fftshift(H)))
+   subplot(2,2,1)
+   imagesc(abs(H))
    title('Magnitude')
    colorbar
-   subplot(1,2,2)
-   imagesc(angle(fftshift(H))/pi)
+   subplot(2,2,2)
+   imagesc(angle(H))
    title('Phase')
+   colorbar
+   subplot(2,2,3)
+   imagesc(real(H))
+   title('Real')
+   colorbar
+   subplot(2,2,4)
+   imagesc(imag(H))
+   title('Imaginary')
    colorbar
    print('-depsc','-r150',sprintf('Spect_%s.eps', FigName));
 end
