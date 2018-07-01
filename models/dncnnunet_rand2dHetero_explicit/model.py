@@ -348,14 +348,17 @@ class denoiser(object):
         output_clean_image = np.asarray(output_clean_image)
         #print output_clean_image.shape
 
-        output_clean = output_clean_image[0,0,:,:,0]
-        #print output_clean.shape
+        output_clean = output_clean_image[0,:,:,:,0]  # (1, 100, 100, 100, 1)
+        #print output_clean.shape   # 100 x 100 x 100
 
         if len(outFile) == 0:
             return output_clean
         else:
             # save output_clean to mat file
             sio.savemat(outFile, {'output_clean':output_clean})
+
+
+
 
     def plot(self, noisydata, ckpt_dir, outDir='./'):
         """Test unet"""
