@@ -8,90 +8,7 @@ import os
 # load mat in python
 import scipy.io as spio
 import numpy as np
-
-
-
-def update_data(inputs_noisy, inputs_clean, offset, filepaths, test_id, 
-        im_w = 100, im_h =100, imgprefix=None, clean_dir=None, clean_prefix=None, target_axis=None):
-
-    if imgprefix is None:
-        print "imgprefix is none! error!"
-        sys.exit(1)
-
-    if clean_dir is None:
-        print "clean dir is none! error!"
-        sys.exit(1)
-
-    if clean_prefix is None:
-        print "clean prefix is none! error!"
-        sys.exit(1)
-
-
-    for fid, noisyfile in enumerate(filepaths):
-        noisymat = spio.loadmat(noisyfile, squeeze_me=True)
-        noisyData = noisymat['currentImage']
-
-        #-------------------------------------------
-        # find out the imageID
-        # remove the prefix, then the suffix ".mat"
-        #-------------------------------------------
-        img_prefix_len = len(imgprefix)
-        img_id = int(noisyfile[img_prefix_len:][:-4])
-
-        cleanfile = clean_dir + '/' + str(test_id) + '/' + target_axis + '/' + clean_prefix + str(test_id) + '_img'  + str(img_id) + '.mat'
-
-        #print noisyfile
-        #print cleanfile
-        #break
-
-        cleanmat = spio.loadmat(cleanfile, squeeze_me=True)
-        cleanData = cleanmat['currentImage']
-
-        if noisyData.shape[0] != cleanData.shape[0] or noisyData.shape[1] != cleanData.shape[1]:
-            print('Error! Noisy data size is different from clean data size!')
-            sys.exit(1)
-
-        # rotation 
-        # data / data90 / data180/ data270
-        noisyData_r90 = np.rot90(noisyData, k=1)
-        cleanData_r90 = np.rot90(cleanData, k=1)
-
-        noisyData_r180 = np.rot90(noisyData, k=2)
-        cleanData_r180 = np.rot90(cleanData, k=2)
-
-        noisyData_r270 = np.rot90(noisyData, k=3)
-        cleanData_r270 = np.rot90(cleanData, k=3)
-
-        # extend one dimension
-        noisyData = np.reshape(noisyData, (im_w, im_h, 1))
-        cleanData = np.reshape(cleanData, (im_w, im_h, 1))
-
-        # print noisyData.shape
-
-        noisyData_r90 = np.reshape(noisyData_r90, (im_h, im_w, 1))
-        cleanData_r90 = np.reshape(cleanData_r90, (im_h, im_w, 1))
-
-        noisyData_r180 = np.reshape(noisyData_r180, (im_h, im_w, 1))
-        cleanData_r180 = np.reshape(cleanData_r180, (im_h, im_w, 1))
-
-        noisyData_r270 = np.reshape(noisyData_r270, (im_h, im_w, 1))
-        cleanData_r270 = np.reshape(cleanData_r270, (im_h, im_w, 1))
-
-        
-        #
-        # update noisy and clean array
-        #
-        inputs_noisy[offset + fid * 4, :, :, :] = noisyData[:, :, :]
-        inputs_clean[offset + fid * 4, :, :, :] = cleanData[:, :, :]
-
-        inputs_noisy[offset + fid * 4 + 1, :, :, :] = noisyData_r90[:, :, :]
-        inputs_clean[offset + fid * 4 + 1, :, :, :] = cleanData_r90[:, :, :]
-
-        inputs_noisy[offset + fid * 4 + 2, :, :, :] = noisyData_r180[:, :, :]
-        inputs_clean[offset + fid * 4 + 2, :, :, :] = cleanData_r180[:, :, :]
-
-        inputs_noisy[offset + fid * 4 + 3, :, :, :] = noisyData_r270[:, :, :]
-        inputs_clean[offset + fid * 4 + 3, :, :, :] = cleanData_r270[:, :, :]
+from scipy.signal import medfilt
 
 
 
@@ -99,11 +16,10 @@ def update_data(inputs_noisy, inputs_clean, offset, filepaths, test_id,
 # 
 #------------------------------------------------------------------------------
 def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
-                 test_num=10,
-                 data_dir='../../data/rand2d',
-                 clean_dir ='../../data/rand2d/1e+08',
+                 data_dir='../../data/rand2d_hetero',
+                 clean_dir ='../../data/rand2d_hetero/1e+08',
                  clean_prefix='test',
-                 save_dir = '../../model_input/rand2d/'):
+                 save_dir = '../../model_input/rand2d_hetero/'):
     '''
     Each simulation results in a different 2D voxel image  using different random seed.
     '''
@@ -138,9 +54,11 @@ def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
 
     #--------------------------------------------
     # data matrix 4-D : model input and output 
+    # 1) noisy 2) clean 3) noise_filter
     #--------------------------------------------
     inputs_noisy = np.zeros((numPatches, im_w, im_h, 1), dtype=np.float32) 
     inputs_clean = np.zeros((numPatches, im_w, im_h, 1), dtype=np.float32)
+    noise_filter = np.zeros((numPatches, im_w, im_h, 1), dtype=np.float32)
 
 
     #--------------------------------------------------------------------------
@@ -187,31 +105,53 @@ def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
             print('Error! Noisy data size is different from clean data size!')
             sys.exit(1)
 
+
+        #residual = cleanData - noisyData
+        residual = abs(noisyData - cleanData)  # there could be neg if not using abs()
+
+        #print noisyData[0:10,0]
+        #print cleanData[0:10,0]
+        #print residual[0:10,0]
+
+        #print residual.shape
+
+        residualF = medfilt(residual, kernel_size = 3) # default kernel size 3
+        #residualF = residual
+
+
+
         # rotation 
         # data / data90 / data180/ data270
         noisyData_r90 = np.rot90(noisyData, k=1)
         cleanData_r90 = np.rot90(cleanData, k=1)
+        residualF_r90 = np.rot90(residualF, k=1)
 
         noisyData_r180 = np.rot90(noisyData, k=2)
         cleanData_r180 = np.rot90(cleanData, k=2)
+        residualF_r180 = np.rot90(residualF, k=2)
 
         noisyData_r270 = np.rot90(noisyData, k=3)
         cleanData_r270 = np.rot90(cleanData, k=3)
+        residualF_r270 = np.rot90(residualF, k=3)
 
         # extend one dimension
         noisyData = np.reshape(noisyData, (im_w, im_h, 1))
         cleanData = np.reshape(cleanData, (im_w, im_h, 1))
+        residualF = np.reshape(residualF, (im_w, im_h, 1))
 
         ## print noisyData.shape
 
         noisyData_r90 = np.reshape(noisyData_r90, (im_h, im_w, 1))
         cleanData_r90 = np.reshape(cleanData_r90, (im_h, im_w, 1))
+        residualF_r90 = np.reshape(residualF_r90, (im_h, im_w, 1))
 
         noisyData_r180 = np.reshape(noisyData_r180, (im_h, im_w, 1))
         cleanData_r180 = np.reshape(cleanData_r180, (im_h, im_w, 1))
+        residualF_r180 = np.reshape(residualF_r180, (im_h, im_w, 1))
 
         noisyData_r270 = np.reshape(noisyData_r270, (im_h, im_w, 1))
         cleanData_r270 = np.reshape(cleanData_r270, (im_h, im_w, 1))
+        residualF_r270 = np.reshape(residualF_r270, (im_h, im_w, 1))
 
 
         
@@ -220,22 +160,41 @@ def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
         #
         inputs_noisy[fid * 4, :, :, :] = noisyData[:, :, :]
         inputs_clean[fid * 4, :, :, :] = cleanData[:, :, :]
+        noise_filter[fid * 4, :, :, :] = residualF[:, :, :]
 
         inputs_noisy[fid * 4 + 1, :, :, :] = noisyData_r90[:, :, :]
         inputs_clean[fid * 4 + 1, :, :, :] = cleanData_r90[:, :, :]
+        noise_filter[fid * 4 + 1, :, :, :] = residualF_r90[:, :, :]
 
         inputs_noisy[fid * 4 + 2, :, :, :] = noisyData_r180[:, :, :]
         inputs_clean[fid * 4 + 2, :, :, :] = cleanData_r180[:, :, :]
+        noise_filter[fid * 4 + 2, :, :, :] = residualF_r180[:, :, :]
 
         inputs_noisy[fid * 4 + 3, :, :, :] = noisyData_r270[:, :, :]
         inputs_clean[fid * 4 + 3, :, :, :] = cleanData_r270[:, :, :]
+        noise_filter[fid * 4 + 3, :, :, :] = residualF_r270[:, :, :]
+
+        # break
 
 
     patch_count = imgNum * 4
     print '[LOG] %d images are generated!' % (patch_count)
 
 
-    print inputs_noisy[10, 50, 50, :],  inputs_clean[10, 50, 50, :]
+    #print inputs_clean[10, 50, 50, :]
+    #print inputs_noisy[10, 50, 50, :]
+    #print noise_filter[10, 50, 50, :]
+
+
+    print "\n(noisy) max \t min "
+    print np.amax(inputs_noisy), np.amin(inputs_noisy)
+
+
+    print "\n(residual) max \t min "
+    print np.amax(noise_filter), np.amin(noise_filter)
+
+
+
 
 
     #--------------------------------------------------------------------------
@@ -246,6 +205,7 @@ def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
         to_pad = numPatches - patch_count
         inputs_noisy[-to_pad:, :, :, :] = inputs_noisy[:to_pad, :, :, :]
         inputs_clean[-to_pad:, :, :, :] = inputs_clean[:to_pad, :, :, :]
+        noise_filter[-to_pad:, :, :, :] = noise_filter[:to_pad, :, :, :]
 
 
     #--------------------------------------------------------------------------
@@ -257,6 +217,7 @@ def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
 
     np.save(os.path.join(save_dir, "rand2d_noisy_pats_" + photon_vol), inputs_noisy)
     np.save(os.path.join(save_dir, "rand2d_clean_pats_" + photon_vol), inputs_clean)
+    np.save(os.path.join(save_dir, "rand2d_resid_pats_" + photon_vol), noise_filter)
 
     print '[LOG] Done! '
     print '[LOG] Check %s for the output.' % save_dir
@@ -266,4 +227,4 @@ def gen_data(photon_vol, batch_size = 64, im_w = 100, im_h = 100,
 if __name__ == '__main__':
 
     print '\nGenerating rand2d data.'
-    gen_data('1e+05', test_num=10, save_dir='../../model_input/rand2d/')
+    gen_data('1e+04', save_dir='../../model_input/rand2d_hetero/')
