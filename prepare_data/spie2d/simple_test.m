@@ -31,12 +31,17 @@ addpath('../mcx/mcxlab')
 [cw, myimg, ~] = rand_2d_mcx(1e4, 0, [100 100], 123);
 plot_rand_mcx(cw, myimg)
 
+clear cw; clear myimg;
+
 [cw, myimg, ~] = rand_2d_mcx(1e6, 0, [100 100], 123);
 plot_rand_mcx(cw, myimg)
 
+clear cw; clear myimg;
 
-[cw, myimg, ~] = rand_2d_mcx(1e4, 10, [100 100], 123);
+[cw, myimg, ~] = rand_2d_mcx(1e4, 7, [100 100], 123);
 plot_rand_mcx(cw, myimg)
 
-[cw, myimg, ~] = rand_2d_mcx(1e6, 10, [100 100], 123);
+clear cw; clear myimg;
+
+[cw, myimg, ~] = rand_2d_mcx(1e6, 7, [100 100], 123);
 plot_rand_mcx(cw, myimg)
