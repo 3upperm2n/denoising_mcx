@@ -37,7 +37,8 @@ if ~exist(dir_phn_1e8, 'dir')  mkdir(dir_phn_1e8); end
 % we will generate 1000 x 20 = 20K images
 % 
 
-N = 1000 * 20;
+N = 1000 * 20;  
+N_part1 = 1000 * 10;
 
 % Generate new random seed for Monte Carlo simulation
 rand_seed = randi([1 2^31-1], 1, N);
@@ -46,9 +47,13 @@ error('There are repeated random seeds!')
 end
 
 
-testID = 1;
+%testID = 1 + N_part1;
+testID = 10239;
+
+
 % 20 different set for opt objs
-for i = 1 : N
+%for i = N_part1 + 1 : N
+for i = 10239 : N
     rand_sd = rand_seed(i);
 
     % 1e4 
