@@ -58,38 +58,40 @@ for i = 21:40
     for j = 1 : N
         rand_sd = rand_seed(j);
 
-        % 1e4 
-        [currentImage, ~, ~] = rand_2d_mcx(1e4, i, [100 100], rand_sd);
-        fname = sprintf('%s/test%d.mat', dir_phn_1e4,  testID);
-        fprintf('Generating %s\n',fname);
-        feval('save', fname, 'currentImage');
-        
-        % 1e5 
-        [currentImage, ~, ~] = rand_2d_mcx(1e5, i, [100 100], rand_sd);
-        fname = sprintf('%s/test%d.mat', dir_phn_1e5,  testID);
-        fprintf('Generating %s\n',fname);
-        feval('save', fname, 'currentImage');
-        
-        % 1e6
-        [currentImage, ~, ~] = rand_2d_mcx(1e6, i, [100 100], rand_sd);
-        fname = sprintf('%s/test%d.mat', dir_phn_1e6,  testID);
-        fprintf('Generating %s\n',fname);
-        feval('save', fname, 'currentImage');
+		if testID >= 24985
+			% 1e4 
+			[currentImage, ~, ~] = rand_2d_mcx(1e4, i, [100 100], rand_sd);
+			fname = sprintf('%s/test%d.mat', dir_phn_1e4,  testID);
+			fprintf('Generating %s\n',fname);
+			feval('save', fname, 'currentImage');
+			
+			% 1e5 
+			[currentImage, ~, ~] = rand_2d_mcx(1e5, i, [100 100], rand_sd);
+			fname = sprintf('%s/test%d.mat', dir_phn_1e5,  testID);
+			fprintf('Generating %s\n',fname);
+			feval('save', fname, 'currentImage');
+			
+			% 1e6
+			[currentImage, ~, ~] = rand_2d_mcx(1e6, i, [100 100], rand_sd);
+			fname = sprintf('%s/test%d.mat', dir_phn_1e6,  testID);
+			fprintf('Generating %s\n',fname);
+			feval('save', fname, 'currentImage');
 
-        % 1e7
-        [currentImage, ~, ~] = rand_2d_mcx(1e7, i, [100 100], rand_sd);
-        fname = sprintf('%s/test%d.mat', dir_phn_1e7,  testID);
-        fprintf('Generating %s\n',fname);
-        feval('save', fname, 'currentImage');
+			% 1e7
+			[currentImage, ~, ~] = rand_2d_mcx(1e7, i, [100 100], rand_sd);
+			fname = sprintf('%s/test%d.mat', dir_phn_1e7,  testID);
+			fprintf('Generating %s\n',fname);
+			feval('save', fname, 'currentImage');
 
-        % 1e8
-        [currentImage, ~, ~] = rand_2d_mcx(1e8, i, [100 100], rand_sd);
-        fname = sprintf('%s/test%d.mat', dir_phn_1e8,  testID);
-        fprintf('Generating %s\n',fname);
-        feval('save', fname, 'currentImage');
+			% 1e8
+			[currentImage, ~, ~] = rand_2d_mcx(1e8, i, [100 100], rand_sd);
+			fname = sprintf('%s/test%d.mat', dir_phn_1e8,  testID);
+			fprintf('Generating %s\n',fname);
+			feval('save', fname, 'currentImage');
 
-        testID = testID + 1;
 
+		end
+		testID = testID + 1;
         %break
     end
     %break
