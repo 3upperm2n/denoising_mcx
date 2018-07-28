@@ -1,4 +1,4 @@
-function [cw, myimg, cfg]=rand_2d_mcx(nphoton, maxprop, imsize, randseed, mcxseed)
+function [cw, myimg, cfg]=rand_2d_mcx_grid(nphoton, maxprop, imsize, randseed, mcxseed)
 %
 % Format:
 %   [cw, myimg, cfg]=rand_2d_mcx(nphoton, maxprop, imsize, randseed, srcoffset)
@@ -31,8 +31,8 @@ end
 if(maxprop==1)
     myimg=ones(imsize);
 else
-%     myimg=creategridrandimg(maxprop-1, imsize)+1; % generate 1 text
-    myimg=createrandimg(maxprop-1, imsize)+1;  % multiple texts 
+    myimg=creategridrandimg(maxprop-1, imsize)+1; % generate 1 text
+%     myimg=createrandimg(maxprop-1, imsize)+1;  % multiple texts 
 end
 maxprop=max(myimg(:));
 

@@ -6,8 +6,7 @@ function plot_rand_mcx(cw, myimg)
 % Author: Qianqian Fang (q.fang at neu.edu)
 %
 
-% cla
-figure;
+cla
 subplot(121);
 imagesc(myimg);
 set(gca,'ydir','normal');

@@ -4,44 +4,13 @@ clc;
 close all;
 clear all;
 
-addpath('../mcx')
-addpath('../mcx/mcxlab')
+figure;
+subplot(1,2,1);
+load('../../data/spie2d/het/1e+04/test1.mat');
+p4img = currentImage;
+imagesc(log10(abs(p4img)));
 
-%  [cw, myimg, cfg]=rand_2d_mcx(nphoton, maxprop, imsize, randseed, srcoffset)
-
-% [cw, myimg, ~] = rand_2d_mcx(1e4, 1, [100 100], 1234, [0 0]);
-% plot_rand_mcx(cw, myimg)
-%  
-% [cw, myimg, ~] = rand_2d_mcx(1e4, 1, [100 100], 1234, [0 10]);
-% plot_rand_mcx(cw, myimg)
-% 
-% % [cw, myimg, ~] = rand_2d_mcx(1e4, 1, [100 100], 1234, [0 50]);
-% % plot_rand_mcx(cw, myimg)
-% 
-% 
-% % [cw, myimg, ~] = rand_2d_mcx(1e4, 1, [100 100], 1234, [0 99]);
-% % plot_rand_mcx(cw, myimg)
-% 
-% [cw, myimg, ~] = rand_2d_mcx(1e4, 1, [100 100], 1234, [49 49]);
-% plot_rand_mcx(cw, myimg)
-% 
-% [cw, myimg, ~] = rand_2d_mcx(1e4, 1, [100 100], 1234, [20 20]);
-% plot_rand_mcx(cw, myimg)
-
-[cw, myimg, ~] = rand_2d_mcx(1e4, 0, [100 100], 123);
-plot_rand_mcx(cw, myimg)
-
-clear cw; clear myimg;
-
-[cw, myimg, ~] = rand_2d_mcx(1e6, 0, [100 100], 123);
-plot_rand_mcx(cw, myimg)
-
-clear cw; clear myimg;
-
-[cw, myimg, ~] = rand_2d_mcx(1e4, 7, [100 100], 123);
-plot_rand_mcx(cw, myimg)
-
-clear cw; clear myimg;
-
-[cw, myimg, ~] = rand_2d_mcx(1e6, 7, [100 100], 123);
-plot_rand_mcx(cw, myimg)
+subplot(1,2,2);
+load('../../data/spie2d/het/1e+07/test1.mat');
+p7img = currentImage;
+imagesc(log10(abs(p7img)));

@@ -31,7 +31,9 @@ for i=1:numchar
     im=getframe();
     im=im.cdata(:,:,1);
     im=(im==0);
-%     im(:,1)=[];
-    myimg=myimg+im';
+    if(size(im,2)==imsize(2)+1)
+        im(:,1)=[];
+    end
+    myimg=myimg+im(1:imsize(2),1:imsize(1))';
 end
 delete(hf);
