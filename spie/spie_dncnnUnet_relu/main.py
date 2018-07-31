@@ -69,6 +69,7 @@ def denoiser_train(denoiser, lr):
     print noisy_data.shape 
     print clean_data.shape
 
+
     #--- max value ---#
     print "\nprev log(x+1)"
     print "noisy_max \t clean_max \t max"
@@ -84,8 +85,9 @@ def denoiser_train(denoiser, lr):
     print "\nafter log(x+1)"
     print "noisy_max \t clean_max \t max"
     max_noisy, max_clean = np.amax(noisy_data), np.amax(clean_data)
-    # maxV = max(max_noisy, max_clean)
-    print max_noisy, max_clean
+    maxV = max(max_noisy, max_clean)
+    print max_noisy, max_clean, maxV
+
 
 
     maxV = 25.
@@ -125,7 +127,7 @@ def main(_):
     if args.use_gpu:
         # added to control the gpu memory
         print("Run Tensorflow [GPU]\n")
-        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.95)
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
         with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
             model = denoiser(sess)  # init a denoiser class
             if args.phase == 'train':

@@ -69,6 +69,7 @@ def denoiser_train(denoiser, lr):
     print noisy_data.shape 
     print clean_data.shape
 
+
     #--- max value ---#
     print "\nprev log(x+1)"
     print "noisy_max \t clean_max \t max"
@@ -81,25 +82,25 @@ def denoiser_train(denoiser, lr):
     noisy_data = np.log(noisy_data + 1.)
     clean_data = np.log(clean_data + 1.)
 
-    print "\nafter log(x+1)"
-    print "noisy_max \t clean_max \t max"
-    max_noisy, max_clean = np.amax(noisy_data), np.amax(clean_data)
-    # maxV = max(max_noisy, max_clean)
-    print max_noisy, max_clean
+    #print "\nafter log(x+1)"
+    #print "noisy_max \t clean_max \t max"
+    #max_noisy, max_clean = np.amax(noisy_data), np.amax(clean_data)
+    ## maxV = max(max_noisy, max_clean)
+    #print max_noisy, max_clean
 
 
-    maxV = 25.
-    print "Using %f for maxV (after log)" % maxV
+    #maxV = 25.
+    #print "Using %f for maxV (after log)" % maxV
 
-    print "\nSaving maxV to use in matlab..."
-    sio.savemat('maxV.mat', dict(maxV=maxV))
+    #print "\nSaving maxV to use in matlab..."
+    #sio.savemat('maxV.mat', dict(maxV=maxV))
 
-    print  "\nDone!"
+    #print  "\nDone!"
 
 
-    #--- normalize with maxV ---#
-    noisy_data = noisy_data / maxV 
-    clean_data = clean_data / maxV 
+    ##--- normalize with maxV ---#
+    #noisy_data = noisy_data / maxV 
+    #clean_data = clean_data / maxV 
 
 
     #--- run training ---#

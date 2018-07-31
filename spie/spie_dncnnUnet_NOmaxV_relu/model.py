@@ -88,14 +88,45 @@ class denoiser(object):
 
 
         # deduct the noise from the input
-        #self.dncnn_out = self.X - self.cov10 
-        self.Y = self.X - self.cov10 
+        self.dncnn_out = self.X - self.cov10 
 
 
+        #
+        # we will use unet to learn the left noise (difusion pattern)
+        #
+
+        # conv + conv + max_pool
+        self.down0a = tc.layers.conv2d(self.dncnn_out,  64,  (3,3), padding='same', normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.down0b = tc.layers.conv2d(self.down0a,     64,  (3,3), padding='same', normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.down0c = tc.layers.max_pool2d(self.down0b,      (2,2), padding='same')
+
+        # down 1
+        self.down1a = tc.layers.conv2d(self.down0c,  128, (3,3), padding='same', normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.down1b = tc.layers.conv2d(self.down1a,  128, (3,3), padding='same', normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.down1c = tc.layers.max_pool2d(self.down1b,   (2,2), padding='same')
+
+        # down 2
+        self.down2a = tc.layers.conv2d(self.down1c,  256, (3,3), padding='same', normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.down2b = tc.layers.conv2d(self.down2a,  256, (3,3), padding='same', normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+
+        # up 1
+        self.up1a = tc.layers.conv2d_transpose(self.down2b, 128, (2,2), 2, normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.up1b = tf.concat([self.up1a, self.down1b], axis=3)
+        self.up1c = tc.layers.conv2d(self.up1b, 128, (3,3), normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.up1d = tc.layers.conv2d(self.up1c, 128, (3,3), normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.up1e = tc.layers.conv2d(self.up1d, 128, (3,3), normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+
+        self.up0a = tc.layers.conv2d_transpose(self.up1e, 64, (2,2), 2, normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.up0b = tf.concat([self.up0a, self.down0b], axis=3)
+        self.up0c = tc.layers.conv2d(self.up0b, 64, (3,3), normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.up0d = tc.layers.conv2d(self.up0c, 64, (3,3), normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
+        self.up0e = tc.layers.conv2d(self.up0d, 64, (3,3), normalizer_fn=tc.layers.batch_norm, normalizer_params={'is_training': self.is_training})
 
         # NOTE: can we have multiple output, and select the max val for each position among them ?
         #self.output_unet = tc.layers.conv2d(self.up0e, 1, [1, 1], activation_fn=None)
-        #self.Y = tc.layers.conv2d(self.up0e, 1, [1, 1], activation_fn=tf.nn.relu)
+        #self.Y = tc.layers.conv2d(self.up0e, 1, [1, 1], activation_fn=None)
+
+        self.Y = tc.layers.conv2d(self.up0e, 1, [1, 1], activation_fn=tf.nn.relu)
 
 
 
@@ -204,8 +235,8 @@ class denoiser(object):
                             self.lr: lr[epoch],
                             self.is_training: True})
 
-
                 iter_num += 1
+
                 print("Epoch: [%2d] [%4d/%4d] time: %4.4f, loss: %.6f" % (epoch + 1, batch_id + 1, numBatch, time.time() - start_time, loss))
                 writer.add_summary(summary, iter_num)
                 writer.flush()
@@ -216,7 +247,7 @@ class denoiser(object):
         print("[*] Finish training.")
 
 
-    def save(self, iter_num, ckpt_dir, model_name='mcx'):
+    def save(self, iter_num, ckpt_dir, model_name='unet-tensorflow'):
         saver = tf.train.Saver()
         checkpoint_dir = ckpt_dir
         if not os.path.exists(checkpoint_dir):
@@ -250,10 +281,10 @@ class denoiser(object):
 
 
         output_clean_image = np.asarray(output_clean_image)
-        #print output_clean_image.shape
+        print output_clean_image.shape
 
         output_clean = output_clean_image[0,:,:,:,0]
-        print output_clean.shape
+        #print output_clean.shape
 
         if len(outFile) == 0:
             return output_clean
