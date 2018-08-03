@@ -5,11 +5,6 @@ import numpy as np
 import tensorflow as tf
 import scipy.io as spio
 
-import matplotlib.pyplot as plt
-import math
-
-import tensorflow as tf
-
 from model import denoiser
 
 parser = argparse.ArgumentParser(description='')
@@ -43,8 +38,8 @@ def denoiser_test(denoiser):
     #------------
     # 1e5
     #------------
-    noisy1  = '../../data/rand2d/1e+05/test1.mat'
-    noisy50 = '../../data/rand2d/1e+05/test50.mat'
+    noisy1  = '../../data/rand2d/test/1e+05/test90.mat'
+    noisy50 = '../../data/rand2d/test/1e+05/test99.mat'
 
     noisymat1 = spio.loadmat(noisy1, squeeze_me=True)  # the output is a dict
     noisymat50 = spio.loadmat(noisy50, squeeze_me=True)  # the output is a dict
@@ -78,8 +73,10 @@ def denoiser_test(denoiser):
     input_noisy1[0, :, :, :] = noisyData1
     input_noisy50[0, :, :, :] = noisyData50
 
-    denoiser.test(input_noisy1,  ckpt_dir=args.ckpt_dir,outFile='1e5model-test1.mat')
-    denoiser.test(input_noisy50, ckpt_dir=args.ckpt_dir,outFile='1e5model-test50.mat')
+    denoiser.test(input_noisy1, ckpt_dir=args.ckpt_dir,
+                  outFile='test90.mat')
+    denoiser.test(input_noisy50, ckpt_dir=args.ckpt_dir,
+                  outFile='test99.mat')
 
 
 

@@ -4,11 +4,7 @@ import os
 import numpy as np
 import tensorflow as tf
 import scipy.io as spio
-
-import matplotlib.pyplot as plt
-import math
-
-import tensorflow as tf
+import time
 
 from model import denoiser
 
@@ -37,52 +33,36 @@ args = parser.parse_args()
 def denoiser_test(denoiser):
 
     #--------------------------------------------------------------------------
-    # apply log(x+1) to the raw value
+    # plan B : apply log(x+1) to the raw value
     #--------------------------------------------------------------------------
 
     #------------
     # 1e5
     #------------
-    noisy1  = '../../data/rand2d/1e+05/test1.mat'
-    noisy50 = '../../data/rand2d/1e+05/test50.mat'
-
-    noisymat1 = spio.loadmat(noisy1, squeeze_me=True)  # the output is a dict
+    noisy50 = '../data/osa_data/1e+05/1/osa_phn1e+05_test1_img50.mat'
     noisymat50 = spio.loadmat(noisy50, squeeze_me=True)  # the output is a dict
-
-    noisyData1 = noisymat1['currentImage']
     noisyData50 = noisymat50['currentImage']
 
-    (im_h, im_w) = noisyData1.shape
+    (im_h, im_w) = noisyData50.shape
 
-    noisyData1 = np.reshape(noisyData1, (im_h, im_w, 1))
-    noisyData50 = np.reshape(noisyData50, (im_h, im_w, 1))
+    noisyData50 = np.reshape(noisyData50, (im_h, im_w, 1))  # extend one dimension
 
     # normalize data
-    noisyData1 = np.log(noisyData1 + 1.)
     noisyData50 = np.log(noisyData50 + 1.)
 
-    # maxV 
-    maxV = spio.loadmat('maxV.mat', squeeze_me=True)  # the output is a dict
-    maxV = maxV['maxV']
-    print maxV
+    # assume it is 100 x 100 x 100 voxel
+    input_noisy50 = np.zeros((100, im_h, im_w, 1), dtype=np.float32)  # 4D matrix
 
-    noisyData1  = noisyData1  / maxV
-    noisyData50 = noisyData50 / maxV
+    # update
+    for i in xrange(100):
+        input_noisy50[i, :, :, :] = noisyData50
 
+#    startT = time.time()
+    denoiser.test(input_noisy50, ckpt_dir=args.ckpt_dir,
+                  outFile='1e5model-1e5-log_all.mat')
 
-
-    input_noisy1 = np.zeros((1, im_h, im_w, 1), dtype=np.float32)  # 4D matrix
-    input_noisy50 = np.zeros((1, im_h, im_w, 1), dtype=np.float32)  # 4D matrix
-
-    ### update
-    input_noisy1[0, :, :, :] = noisyData1
-    input_noisy50[0, :, :, :] = noisyData50
-
-    denoiser.test(input_noisy1,  ckpt_dir=args.ckpt_dir,outFile='1e5model-test1.mat')
-    denoiser.test(input_noisy50, ckpt_dir=args.ckpt_dir,outFile='1e5model-test50.mat')
-
-
-
+#    endT = time.time()
+#    print("=> denoiser runtime = {} (s)".format(endT - startT))
 
 def main(_):
     if args.use_gpu:
