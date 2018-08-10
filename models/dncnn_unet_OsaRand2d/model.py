@@ -237,7 +237,8 @@ class denoiser(object):
         output_clean_image = np.asarray(output_clean_image)
         #print output_clean_image.shape
 
-        output_clean = output_clean_image[0,0,:,:,0]
+        #output_clean = output_clean_image[0,0,:,:,0]
+        output_clean = output_clean_image[0,:,:,:,0]
         #print output_clean.shape
 
         if len(outFile) == 0:
@@ -245,24 +246,4 @@ class denoiser(object):
         else:
             # save output_clean to mat file
             sio.savemat(outFile, {'output_clean':output_clean})
-
-
-    # filter on a jpg image
-    def test_fun(self, blue_new, green_new, red_new, ckpt_dir):
-        tf.initialize_all_variables().run()
-
-        load_model_status, global_step = self.load(ckpt_dir)
-        assert load_model_status == True, '[!] Load weights FAILED...'
-        print("[*] Load weights SUCCESS...")
-
-        ## note: input is 4D
-        out_blue = self.sess.run([self.Y], feed_dict={self.X: blue_new, self.is_training: False})
-        out_green = self.sess.run([self.Y], feed_dict={self.X: green_new, self.is_training: False})
-        out_red = self.sess.run([self.Y], feed_dict={self.X: red_new, self.is_training: False})
-
-        out_blue = np.asarray(out_blue)
-        out_green = np.asarray(out_green)
-        out_red = np.asarray(out_red)
-
-        print out_blue.shape
 

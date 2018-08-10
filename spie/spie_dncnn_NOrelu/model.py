@@ -250,10 +250,10 @@ class denoiser(object):
 
 
         output_clean_image = np.asarray(output_clean_image)
-        print output_clean_image.shape
+        #print output_clean_image.shape
 
         output_clean = output_clean_image[0,:,:,:,0]
-        #print output_clean.shape
+        print output_clean.shape
 
         if len(outFile) == 0:
             return output_clean

@@ -63,6 +63,18 @@ def denoiser_train(denoiser, lr):
     #  apply log(x+1) to the raw value, and select maxV to normalize
     #--------------------------------------------------------------------------
 
+
+    # 1) homo: around 12K images:  osa_img_noisy_pats_1e+05.npy
+    # 
+    #  the original data is located at: data/osa/1e+05
+
+    #
+    # 2) hete: around 8K images:   rand2d/rand2d_noisy_pats_1e+05.npy
+    #
+    #   To generate rand2d() heteregeneous data:  prepare_data/rand2d_old
+    #
+    #  the original data is located at : data/rand2d/1e+05
+
     noisy_data = np.load('../../model_input/homo_hetero/osa_rand2d_noisy.npy')
     clean_data = np.load('../../model_input/homo_hetero/osa_rand2d_clean.npy')
     print noisy_data.shape , clean_data.shape

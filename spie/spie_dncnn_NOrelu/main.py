@@ -63,25 +63,11 @@ def denoiser_train(denoiser, lr):
     #  apply log(x+1) to the raw value, and select maxV to normalize
     #--------------------------------------------------------------------------
 
-    hom_noisy = np.load('../../model_input/spie2d/hom/1to2K_1e4.npy')
-    hom_clean = np.load('../../model_input/spie2d/hom/1to2K_1e8.npy')
-
-    het_noisy = np.load('../../model_input/spie2d/het/1to4K_1e4.npy')
-    het_clean = np.load('../../model_input/spie2d/het/1to4K_1e8.npy')
-
-    #print hom_noisy.shape
-    #print hom_clean.shape
-
-    #print het_noisy.shape
-    #print het_clean.shape
-
-
-    noisy_data = np.vstack((hom_noisy, het_noisy)) 
-    clean_data = np.vstack((hom_clean, het_clean)) 
+    noisy_data = np.load('../../model_input/spie2d/noisy1e4.npy')
+    clean_data = np.load('../../model_input/spie2d/clean1e7.npy')
 
     print noisy_data.shape 
     print clean_data.shape
-
 
     #--- max value ---#
     print "\nprev log(x+1)"

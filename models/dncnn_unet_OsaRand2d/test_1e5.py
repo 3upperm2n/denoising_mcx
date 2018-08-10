@@ -5,6 +5,11 @@ import numpy as np
 import tensorflow as tf
 import scipy.io as spio
 
+import matplotlib.pyplot as plt
+import math
+
+import tensorflow as tf
+
 from model import denoiser
 
 parser = argparse.ArgumentParser(description='')
@@ -73,10 +78,8 @@ def denoiser_test(denoiser):
     input_noisy1[0, :, :, :] = noisyData1
     input_noisy50[0, :, :, :] = noisyData50
 
-    denoiser.test(input_noisy1, ckpt_dir=args.ckpt_dir,
-                  outFile='1e5model-test1.mat')
-    denoiser.test(input_noisy50, ckpt_dir=args.ckpt_dir,
-                  outFile='1e5model-test50.mat')
+    denoiser.test(input_noisy1,  ckpt_dir=args.ckpt_dir,outFile='1e5model-test1.mat')
+    denoiser.test(input_noisy50, ckpt_dir=args.ckpt_dir,outFile='1e5model-test50.mat')
 
 
 
