@@ -25,16 +25,16 @@ subplot(2,2,2);
 imagesc(log10(abs(cwdata1))); colorbar;
 currentImage = cwdata1; feval('save', 'square_1e6.mat', 'currentImage');
 
-[cwdata2, imgdata2, ~] = rand_2d_mcx_grid_test(1e7, img_modify, 123, mcxseed);
+[cwdata1, imgdata1, ~] = rand_2d_mcx_grid_test(1e7, img_modify, 123, mcxseed);
 subplot(2,2,3);
-imagesc(log10(abs(cwdata2))); colorbar;
-currentImage = cwdata2; feval('save', 'square_1e7.mat', 'currentImage');
+imagesc(log10(abs(cwdata1))); colorbar;
+currentImage = cwdata; feval('save', 'square_1e7.mat', 'currentImage');
 
 
-[cwdata3, imgdata3, ~] = rand_2d_mcx_grid_test(1e8, img_modify, 123, mcxseed);
+[cwdata1, imgdata1, ~] = rand_2d_mcx_grid_test(1e8, img_modify, 123, mcxseed);
 subplot(2,2,4);
-imagesc(log10(abs(cwdata3))); colorbar;
-currentImage = cwdata3; feval('save', 'square_1e8.mat', 'currentImage');
+imagesc(log10(abs(cwdata1))); colorbar;
+currentImage = cwdata; feval('save', 'square_1e8.mat', 'currentImage');
 
 
 %%
@@ -80,18 +80,18 @@ currentImage = cwdata; feval('save', 'square02_1e5.mat', 'currentImage');
 [cwdata1, imgdata1, ~] = rand_2d_mcx_grid_test(1e6, img_modify, 123, mcxseed);
 subplot(2,2,2);
 imagesc(log10(abs(cwdata1))); colorbar;
-currentImage = cwdata1; feval('save', 'square02_1e6.mat', 'currentImage');
+currentImage = cwdata; feval('save', 'square02_1e6.mat', 'currentImage');
 
-[cwdata2, imgdata2, ~] = rand_2d_mcx_grid_test(1e7, img_modify, 123, mcxseed);
+[cwdata1, imgdata1, ~] = rand_2d_mcx_grid_test(1e7, img_modify, 123, mcxseed);
 subplot(2,2,3);
-imagesc(log10(abs(cwdata2))); colorbar;
-currentImage = cwdata2; feval('save', 'square02_1e7.mat', 'currentImage');
+imagesc(log10(abs(cwdata1))); colorbar;
+currentImage = cwdata; feval('save', 'square02_1e7.mat', 'currentImage');
 
 
-[cwdata3, imgdata3, ~] = rand_2d_mcx_grid_test(1e8, img_modify, 123, mcxseed);
+[cwdata1, imgdata1, ~] = rand_2d_mcx_grid_test(1e8, img_modify, 123, mcxseed);
 subplot(2,2,4);
-imagesc(log10(abs(cwdata3))); colorbar;
-currentImage = cwdata3; feval('save', 'square02_1e8.mat', 'currentImage');
+imagesc(log10(abs(cwdata1))); colorbar;
+currentImage = cwdata; feval('save', 'square02_1e8.mat', 'currentImage');
 
 
 
