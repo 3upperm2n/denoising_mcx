@@ -99,7 +99,8 @@ def denoiser_train(denoiser, lr):
     print max_noisy, max_clean, maxV
 
 
-    maxV = float(int(maxV) + 3) # add extra 3 for upper bound
+    #maxV = float(int(maxV) + 3) # add extra 3 for upper bound
+    maxV = 25.
     print "Using %f for maxV (after log)" % maxV
 
     print "\nSaving maxV to use in matlab..."
