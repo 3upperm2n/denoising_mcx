@@ -59,10 +59,13 @@ mus=musp./(1-g);
 
 %myprop=[0.005 1 0 1.37; 0.025 1 0 1.37];    % [mua,mus,g,n] :
 
-%myprop=[0.005 1 0 1.37; 0.02 10 0.9 1.37];    % homo
-myprop=[0.005 1 0 1.37; 0.1 10 0.9 1.37];    % absorber       
+myprop=[0.005 1 0 1.37; 0.02 10 0.9 1.37];    % homo : no obj  / default
+%myprop=[0.005 1 0 1.37; 0.1 10 0.9 1.37];    % absorber  + obj      
 %myprop=[0.005 1 0 1.37; 0.02 10 0.9 6.85];    % refractive   
 
+
+%myprop=[0.005 1 0 1.37; 0.02 30 0.9 1.37];    % homo : 30 scattering
+%myprop=[0.005 1 0 1.37; 0.02 100 0.9 1.37];    % homo : 100 scattering
 
 
 cfg.prop=[0 0 1 1; myprop];
