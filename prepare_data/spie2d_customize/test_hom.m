@@ -1,5 +1,10 @@
 clear all; close all; clc;
 
+addpath('../mcx/');
+addpath('../mcx/mcxlab');
+
+
+%%
 mcxseed=111;
 
 % the test image is grayscle, text is black, bg is white
@@ -21,23 +26,27 @@ figure;
 [cwdata, imgdata, ~] = rand_2d_mcx_grid_test(1e5, img_modify, 123, mcxseed);
 subplot(2,2,1);
 imagesc(log10(abs(cwdata))); colorbar;
+title('1e5');
 currentImage = cwdata; feval('save', 'square_1e5.mat', 'currentImage');
 
 
 [cwdata1, imgdata1, ~] = rand_2d_mcx_grid_test(1e6, img_modify, 123, mcxseed);
 subplot(2,2,2);
 imagesc(log10(abs(cwdata1))); colorbar;
+title('1e6');
 currentImage = cwdata1; feval('save', 'square_1e6.mat', 'currentImage');
 
 [cwdata2, imgdata2, ~] = rand_2d_mcx_grid_test(1e7, img_modify, 123, mcxseed);
 subplot(2,2,3);
 imagesc(log10(abs(cwdata2))); colorbar;
+title('1e7');
 currentImage = cwdata2; feval('save', 'square_1e7.mat', 'currentImage');
 
 
 [cwdata3, imgdata3, ~] = rand_2d_mcx_grid_test(1e8, img_modify, 123, mcxseed);
 subplot(2,2,4);
 imagesc(log10(abs(cwdata3))); colorbar;
+title('1e8');
 currentImage = cwdata3; feval('save', 'square_1e8.mat', 'currentImage');
 
 

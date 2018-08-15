@@ -6,6 +6,11 @@ function [cw, myimg, cfg]=rand_2d_mcx_grid_test(nphoton, myimg, randseed, mcxsee
 % Author: Qianqian Fang (q.fang at neu.edu)
 %
 
+
+addpath('../mcx/');
+addpath('../mcx/mcxlab');
+
+
 cfg.nphoton=nphoton;
 imsize = size(myimg);
 
@@ -59,9 +64,15 @@ mus=musp./(1-g);
 
 %myprop=[0.005 1 0 1.37; 0.025 1 0 1.37];    % [mua,mus,g,n] :
 
-myprop=[0.005 1 0 1.37; 0.02 10 0.9 1.37];    % homo : no obj  / default
+%myprop=[0.005 1 0 1.37; 0.02 10 0.9 1.37];    % homo : no obj  / default
 %myprop=[0.005 1 0 1.37; 0.1 10 0.9 1.37];    % absorber  + obj      
 %myprop=[0.005 1 0 1.37; 0.02 10 0.9 6.85];    % refractive   
+
+
+% yaoshen's comment
+myprop=[0.02 10 0.9 1.37; 0.02 10 0.9 1.37];    % homo : no obj  / default
+%myprop=[0.02 10 0.9 1.37; 0.1 10 0.9 1.37];    % absorber  + obj      
+
 
 
 %myprop=[0.005 1 0 1.37; 0.02 30 0.9 1.37];    % homo : 30 scattering
