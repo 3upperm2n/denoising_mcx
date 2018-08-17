@@ -35,10 +35,12 @@ cfg.issrcfrom0=1;
 cfg.srctype='pencil';
 
 %cfg.srcpos=[0 rand()*imsize(1) rand()*imsize(2)];
-cfg.srcpos=[0 0.5*imsize(1) imsize(2) * 0];
+cfg.srcpos=[0 0.5*imsize(1) imsize(2) * 0]; % [0 50 0]
 
 cfg.srcdir=[0 imsize(1)*0.5-cfg.srcpos(2)  imsize(2)*0.5-cfg.srcpos(3)];
 cfg.srcdir=cfg.srcdir/norm(cfg.srcdir);
+
+
 cfg.gpuid=1;
 cfg.seed=mcxseed;
 % cfg.gpuid='11'; % use two GPUs together
@@ -47,41 +49,28 @@ musp=abs(randn(maxprop,1)+1);
 g=rand(maxprop,1);
 g=zeros(maxprop,1);
 mus=musp./(1-g);
+
+
 % myprop=[abs(randn(maxprop,1)*0.05+0.01), mus, g, rand(maxprop,1)+1];
-%myprop(1,:) = [0.02 10 0.9 1.37];
-%myprop(2,:)=[abs(randn*0.3+1)*0.01 abs(randn+10) 0.9 1.37];
+myprop(1,:) = [0.02 10 0.9 1.37];
+myprop(2,:)=[abs(randn*0.3+1)*0.01 abs(randn+10) 0.9 1.37];
 %myprop(2,:) = [0.1 10 0.9 1.37];
 
-myprop=[0.005 1 0 1.37; 0.1 10 0.9 1.37];
-
-% myprop(:,1)=myprop(:,1) * 3; % adjust absorption
-% % myprop(:,2)=myprop(:,2) * 0.1; % adjust scattering
-% % myprop(:,3)=myprop(:,3) * 10; % adjust anisotropy
-% myprop(:,4)=myprop(:,4) * 0.1; % adjust refractive coef 
 
 %
 % overwrite myprop
-% %
+% 
 
-
-%myprop=[0.0011 0.9161 0.0100 1.3300; 0.0107 0.1757 0 1.8652];
-%myprop(2,4) = myprop(2,4) * 3;
 
 %myprop=[0.005 1 0 1.37; 0.025 1 0 1.37];    % [mua,mus,g,n] :
-
 %myprop=[0.005 1 0 1.37; 0.02 10 0.9 1.37];    % homo : no obj  / default
 %myprop=[0.005 1 0 1.37; 0.1 10 0.9 1.37];    % absorber  + obj      
-%myprop=[0.005 1 0 1.37; 0.02 10 0.9 6.85];    % refractive   
-
+%myprop=[0.005 1 0 1.37; 0.02 10 0.9 6.85];    % refractive
 
 % yaoshen's comment
 %myprop=[0.02 10 0.9 1.37; 0.02 10 0.9 1.37];    % homo : no obj  / default
 %myprop=[0.02 10 0.9 1.37; 0.1 10 0.9 1.37];    % absorber  + obj      
 
-
-
-%myprop=[0.005 1 0 1.37; 0.02 30 0.9 1.37];    % homo : 30 scattering
-%myprop=[0.005 1 0 1.37; 0.02 100 0.9 1.37];    % homo : 100 scattering
 
 
 cfg.prop=[0 0 1 1; myprop];
