@@ -1,0 +1,3 @@
+# generate SNR data for rand2d using journal2 config
+
+remember to chang the optical properties in rand_2d_mcx_grid_test.m
